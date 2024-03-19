@@ -1,0 +1,38 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+'Josh Withrow - 2022-03-18
+'Launch Codesoft from menu item.
+
+V.Local..BulkDeclareString(sPath,sCurPath,sVer,sRet)
+V.Local..BulkDeclareBoolean(bExists)
+V.Local..BulkDeclareLong(i)
+
+'Initialization...
+V.Local.sPath.Set("C:\Program Files (x86)\Teklynx\CODESOFT YYYY\CS.exe")
+
+'GSS Supported/Distributed Codesoft "Versions"
+F.Intrinsic.String.Split("2015*!*2016*!*2017*!*2018*!*2019*!*2020*!*2021*!*2022","*!*",V.Local.sVer)
+
+F.Intrinsic.Control.For(V.Local.i,0,V.Local.sVer.UBound,1)
+	F.Intrinsic.String.Replace(V.Local.sPath,"YYYY",V.Local.sVer(V.Local.i),V.Local.sCurPath)
+	F.Intrinsic.File.Exists(V.Local.sCurPath,V.Local.bExists)
+	F.Intrinsic.Control.If(V.Local.bExists)
+		F.Intrinsic.Control.ExitFor(V.Local.i)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i)
+
+F.Intrinsic.Control.If(V.Local.bExists)
+	F.Intrinsic.Task.LaunchAsync(V.Local.sCurPath,1,V.Local.sRet)
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("No supported version of Codesoft found. Cannot launch Codesoft.","Codesoft Not Found")
+F.Intrinsic.Control.EndIf
+
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$5$}$3.0.0.0$}$1
+${$6$}$jwithrow$}$20220318105130296$}$D95tSYIikIvF+oq+s87EtBQePACEH+EyDs2gPmW3WNp3zq+Jao/Io7PKnGmjhBV4W3F/6qFNCMewM3kM0u/YdA==
+Program.Sub.Comments.End
